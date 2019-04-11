@@ -1,10 +1,12 @@
 class QuizController < ApplicationController
   def index
+    logger.info
   end
 
   def create
     @question = Question.new(quest_params)
     QuizLogicModel.determine_lvl(quest_params[:level])
+    AnswerJob.perform(level, question, task_id)
     head :ok
   end
 
